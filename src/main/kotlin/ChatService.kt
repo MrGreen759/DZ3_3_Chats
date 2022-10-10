@@ -136,4 +136,20 @@ object ChatService {
         }
         return "Неизвестный собеседник"
     }
+
+    // подготовка к тестам
+    fun prepareForTests() {
+        userList = mutableListOf()
+        commonChatList = mutableListOf()
+        chatCounter = 0
+
+//        val user = User(12, "Я")
+//        val sergey = User(18, "Сергей")
+//        val ivan = User(21, "Иван")
+//        val anna = User (30, "Анна")
+//
+//        ChatService.userList = mutableListOf(user, sergey, ivan, anna)
+
+    }
+
 }
