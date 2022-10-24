@@ -49,9 +49,15 @@ fun main() {
     // получение заданного количества сообщений
     ChatService.viewChat(chat3, 3)
     ChatService.viewChat(chat3, 3, 3)
+    println("\nМетод getMessages (функциональный подход):\n " + ChatService.getMessages(3,3,3) + "\n")
 
     // получение списка чатов пользователя
     println("\n" + ChatService.getChats(12))
+
+    // получение списка чатов (Sequences)
+    val tempList = ChatService.getNChats(12,2)
+    if (tempList.isEmpty()) println("\u001B[31mУ вас нет активных чатов.\u001B[0m")
+    else println(tempList)
 
     // получение количества непрочитанных чатов
     println("\nУ вас есть непрочитанные сообщения в ${ChatService.getUnreadChatsCount(12)} чатах.")

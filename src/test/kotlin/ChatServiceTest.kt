@@ -1,6 +1,6 @@
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class ChatServiceTest {
 
@@ -32,6 +32,28 @@ class ChatServiceTest {
     @Test(expected = ChatNotFoundException::class)
     fun shouldThrow() {
         ChatService.editMessage(4,4,"New message")
+    }
+
+    @Test
+    fun getNChats() {
+        ChatService.letsChat(12, 18, "Привет, Серега.")
+        ChatService.letsChat(12, 18, "Как дела?")
+        ChatService.letsChat(12, 30, "Привет, Аня.")
+        val result = ChatService.getNChats(12,2)
+        assertNotNull(result)
+    }
+
+    @Test
+    fun isUserFoundThrow() {
+        ChatService.isUserFound(12)
+    }
+
+    @Test
+    fun getMessages() {
+        ChatService.letsChat(12, 18, "Привет, Серега.")
+        ChatService.letsChat(12, 18, "Как дела?")
+        val result = ChatService.getMessages(1,2,1)
+        assertIs<String>(result)
     }
 
 }

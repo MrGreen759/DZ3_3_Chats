@@ -95,15 +95,34 @@ object ChatService {
 
     // получение информации о чатах пользователя
     fun getChats(uid: Int): List<Chat> {
+        if (!isUserFound(uid)) throw UserNotFoundException()
         val chatList = commonChatList.filter { chat: Chat -> chat.userId == uid }
         if (chatList.isEmpty()) println("\u001B[31mУ вас нет активных чатов.\u001B[0m")
         return chatList
+    }
+
+    // получение информации об "n" чатах пользователя (Sequences)
+    fun getNChats(uid: Int, n: Int): List<Chat> {
+        return commonChatList.asSequence()
+            .filter { chat: Chat -> chat.userId == uid }
+            .ifEmpty { throw UserNotFoundException() }
+            .take(n)
+            .toList()
     }
 
     // получение информации о непрочитанных чатах
     fun getUnreadChatsCount(uid: Int): Int {
         val chatList = commonChatList.filter { chat: Chat -> (chat.userId == uid && chat.unread)}
         return chatList.size
+    }
+
+    // получение списка сообщений из определенного чата
+    fun getMessages(cid: Int, bm: Int = 1, qm: Int = 0): String {
+        val mess = commonChatList[getIndexById(cid)].messages
+        return mess.drop(bm-1)
+            .take(if(qm==0) mess.size else qm)
+            .map{it.first + ": " + it.second}
+            .joinToString(separator = "\n")
     }
 
     // просмотр чата
@@ -134,7 +153,16 @@ object ChatService {
         for (user in userList) {
             if (user.userId == uid) return user.userName
         }
-        return "Неизвестный собеседник"
+        //return "Неизвестный собеседник"
+        println(userList)
+        throw UserNotFoundException("Пользователь не зерегистрирован в системе.")
+    }
+
+    fun isUserFound(uid: Int): Boolean {
+        for (user in userList) {
+            if (user.userId == uid) return true
+        }
+        return false
     }
 
     // подготовка к тестам
@@ -143,12 +171,12 @@ object ChatService {
         commonChatList = mutableListOf()
         chatCounter = 0
 
-//        val user = User(12, "Я")
-//        val sergey = User(18, "Сергей")
-//        val ivan = User(21, "Иван")
-//        val anna = User (30, "Анна")
-//
-//        ChatService.userList = mutableListOf(user, sergey, ivan, anna)
+        val user = User(12, "Я")
+        val sergey = User(18, "Сергей")
+        val ivan = User(21, "Иван")
+        val anna = User (30, "Анна")
+
+        ChatService.userList = mutableListOf(user, sergey, ivan, anna)
 
     }
 
