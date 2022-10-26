@@ -44,8 +44,15 @@ class ChatServiceTest {
     }
 
     @Test
-    fun isUserFoundThrow() {
-        ChatService.isUserFound(12)
+    fun isUserFound() {
+        val result = ChatService.isUserFound(12)
+        assertTrue(result)
+    }
+
+    @Test
+    fun isUserNotFound() {
+        val result = ChatService.isUserFound(14)
+        assertFalse(result)
     }
 
     @Test
